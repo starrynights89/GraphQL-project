@@ -5,6 +5,7 @@ import { makeExecutableSchema } from 'graphql-tools';
 import Resolvers from './resolvers';
 import Schema from './schema';
 
+// Add Schema and Resolvers to GraphQL
 const executableSchema = makeExecutableSchema({
   typeDefs: Schema,
   resolvers: Resolvers,

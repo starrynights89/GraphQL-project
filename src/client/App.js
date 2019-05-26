@@ -19,6 +19,7 @@ const posts = [{
   },
 }];
 
+// Class app extend React Component
 export default class App extends Component {
   state = {
     posts: posts,

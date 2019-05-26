@@ -1,3 +1,5 @@
+// GraphQL schema
+
 const typeDefinitions = `
   type Post {
     id: Int
