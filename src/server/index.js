@@ -11,7 +11,7 @@ import services from './services';
 const root = path.join(__dirname, '../../');
 const app = express();
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'development') {
   app.use(helmet());
   app.use(helmet.contentSecurityPolicy({
     directives: {
