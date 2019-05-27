@@ -1,4 +1,4 @@
-// Express.js server
+// root Express.js server
 
 import express from 'express';
 import path from 'path';
@@ -6,6 +6,7 @@ import helmet from 'helmet';
 import cors from 'cors';
 import compress from 'compression';
 import services from './services';
+import db from './database';
 
 // Setup root of project
 const root = path.join(__dirname, '../../');

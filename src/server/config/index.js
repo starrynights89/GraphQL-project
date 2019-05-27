@@ -16,12 +16,12 @@ module.exports = {
     },
   },
   production: {
-    host: process.env.host,
-    username: process.env.username,
-    password: process.env.password,
-    database: process.env.database,
+    host: 'process.env.host',
+    username: 'process.env.username',
+    password: 'process.env.password',
+    database: 'process.env.database',
     logging: false,
-    dialect: mysql,
+    dialect: 'mysql',
     operatorsAliases: false,
     pool: {
       max: 5,
