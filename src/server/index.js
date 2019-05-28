@@ -19,7 +19,7 @@ const app = express();
 // If the node environment is in development
 // utitilize helmet, contentSecurity, compress, and cors
 // to secure Express.js
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV !== 'production') {
   app.use(helmet());
   app.use(helmet.contentSecurityPolicy({
     directives: {
