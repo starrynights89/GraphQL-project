@@ -1,15 +1,16 @@
 // GraphQL schema
 
 const typeDefinitions = `
+  type User {
+    id: Int
+    avatar: String
+    username: String
+  }
+
   type Post {
     id: Int
     text: String
     user: User
-  }
-
-  type User {
-    avatar: String
-    username: String
   }
 
   input PostInput {
@@ -24,7 +25,6 @@ const typeDefinitions = `
   type RootMutation {
     addPost (
       post: PostInput!
-      user: UserInput!
     ): Post
   }
 
