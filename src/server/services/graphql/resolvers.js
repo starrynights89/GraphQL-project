@@ -39,6 +39,11 @@ export default function resolver() {
         return postObject;
       },
     },
+    Post: {
+      user(post, args, context) {
+        return post.getUser();
+      },
+    },
   };
 
   return resolvers;
