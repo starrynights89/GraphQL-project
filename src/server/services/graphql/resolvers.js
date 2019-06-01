@@ -24,6 +24,11 @@ export default function resolver() {
   } = db.models;
 
   const resolvers = {
+    Post: {
+      user(post, args, context) {
+        return post.getUser();
+      },
+    },
     Message: {
       user(message, args, context) {
         return message.getUser();
