@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-import gql from 'graphql-tag';
 import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { HttpLink } from 'apollo-link-http';
@@ -23,19 +22,5 @@ const client = new ApolloClient({
   ]),
   cache: new InMemoryCache(),
 });
-
-client.query({
-  query: gql`
-    {
-      posts {
-        id
-        text
-        user {
-          avatar
-          username
-        }
-      }
-    }`,
-}).then(result => console.log(result));
 
 export default client;
