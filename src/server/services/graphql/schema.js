@@ -24,6 +24,11 @@ const typeDefinitions = `
     id: Int
     messages: [Message]
     users: [User]
+    lastMessage: Message
+  }
+
+  type PostFeed {
+    posts: [Post]
   }
 
   input PostInput {
@@ -58,8 +63,9 @@ const typeDefinitions = `
 
   type RootQuery {
     posts: [Post]
-    chat(chatId: Int): Chat
     chats: [Chat]
+    chat(chatId: Int): Chat
+    postsFeed(page: Int, limit: Int): PostFeed
   }
 
   schema {
