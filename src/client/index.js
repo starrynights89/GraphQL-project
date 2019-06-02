@@ -7,5 +7,4 @@ import client from './apollo';
 ReactDOM.render(
   <ApolloProvider client={client}>
     <App />
-  </ApolloProvider>, document.getElementById('root'),
-);
+  </ApolloProvider>, document.getElementById('root'));

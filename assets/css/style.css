@@ -6,23 +6,6 @@ body {
 p {
   margin-bottom: 0;
 }
-form {
-  padding-bottom: 20px;
-}
-form textarea {
-  width: calc(100% - 20px);
-  padding: 10px;
-  border-color: #bbb;
-}
-form [type=submit] {
-  border: none;
-  background-color: #6ca6fd;
-  color: #ffff;
-  padding: 10px;
-  border-radius: 5px;
-  font-size: 14px;
-  float: right;
-}
 .container {
   max-width: 500px;
   margin: 70px auto 0 auto;
@@ -56,4 +39,48 @@ form [type=submit] {
   margin: 5px;
   padding: 5px;
   min-height: 50px;
+}
+form {
+  padding-bottom: 20px;
+}
+form textarea {
+  width: calc(100% - 20px);
+  padding: 10px;
+  border-color: #bbb;
+}
+form [type=submit] {
+  border: none;
+  background-color: #6ca6fd;
+  color: #ffff;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  float: right;
+}
+.optimistic {
+  -webkit-animation: scale-up 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000)
+    both;
+  animation: scale-up 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+}
+
+@-webkit-keyframes scale-up {
+  0% {
+      -webkit-transform: scale(0.5);
+      transform: scale(0.5);
+  }
+  100% {
+      -webkit-transform: scale(1);
+      transform: scale(1);
+  }
+}
+
+@keyframes scale-up {
+  0% {
+    -webkit-transform: scale(0.5);
+    transform: scale(0.5);
+  }
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
 }
