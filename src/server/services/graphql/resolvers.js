@@ -94,11 +94,11 @@ export default function resolver() {
           offset: skip,
         };
 
-        if(page && limit) {
+        if (page && limit) {
           skip = page * limit;
         }
 
-        if(limit) {
+        if (limit) {
           query.limit = limit;
         }
 
