@@ -1,6 +1,8 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-var */
 import React from 'react';
 
-export default ({color, size}) => {
+export default ({ color, size }) => {
   var style = {
     backgroundColor: '#6ca6fd',
     width: 40,
