@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import gql from 'graphql-tag';
-import { Query } from "react-apollo";
+import { Query, Mutation } from "react-apollo";
 
 const GET_POSTS = gql`
   posts {
@@ -9,6 +9,19 @@ const GET_POSTS = gql`
     user {
       avatar
       username
+    }
+  }
+`;
+
+const ADD_POST = gql`
+  mutation addPost($post : PostInput!) {
+    addPost(post : $post) {
+      id 
+      text
+      user {
+        username
+        avatar
+      }
     }
   }
 `;
@@ -37,40 +50,63 @@ export default class Feed extends Component {
   }
   
   render() {
+    const self = this;
     const { postContent } = this.state;
     
     return (
-      <div className="container">
-        <div className="postForm">
-          <form onSubmit={this.handleSubmit}> 
-            <textarea value={postContent} onChange=
-            {this.handlePostContentChange} placeholder="Write your 
-              custom post!"/>
-              <input type="submit" value="Submit" />
-          </form>
-        </div>
-        <div className="feed">   
-          <Query query={GET_POSTS}>
-            {({ loading, error, data }) => {
-              if (loading) return "Loading...";
-              if (error) return error.message;
-    
-              const { posts } = data;
-              return posts.map((post, i) => 
-                <div key={post.id} className="post">
-                  <div className="header">
-                    <img src={post.user.avatar} />
-                    <h2>{post.user.username}</h2>
+      <Query query={GET_POSTS}>
+        {({ loading, error, data }) => {
+          if (loading) return "Loading...";
+          if (error) return error.message;
+          
+          const { posts } = data;
+
+          return (
+            <div className="container">
+              <div className="postForm">
+                <Mutation mutation={ADD_POST}
+                  update = {(store, { data: { addPost } }) => {
+                    const data = store.readQuery({ query: GET_POSTS });
+                    data.posts.unshift(addPost);
+                    store.writeQuery({ query: GET_POSTS, data });
+                  }}
+                >
+                  {addPost => (
+                    <form onSubmit={e => {
+                      e.preventDefault();
+                      addPost({ variables: { post: { text: 
+                        postContent
+                      } } }).then(() => {
+                        self.setState((prevState) => ({
+                          postContent: ''
+                        }));
+                      });
+                    }}>
+                      <textarea value={postContent} onChange=
+                      {self.handlePostContentChange} placeholder="Write
+                      your custom post!"/>
+                      <input type="submit" value="Submit" />
+                    </form>
+                  )}
+                </Mutation>
+              </div>
+              <div className="feed">
+                {posts.map((post, i) =>
+                  <div key={post.id} className="post">
+                    <div className="header">
+                      <img src={post.user.avatar} />
+                      <h2>{post.user.username}</h2>
+                    </div>
+                    <p className="content">
+                      {post.text}
+                    </p>
                   </div>
-                  <p className="content">
-                    {post.text}
-                  </p>
-                </div>
-              )
-            }}
-          </Query>
-        </div>
-      </div>
+                  )}
+              </div>
+            </div>
+          )
+        }}
+      </Query>
     )
   }
 }
