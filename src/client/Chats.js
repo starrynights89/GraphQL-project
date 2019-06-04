@@ -13,6 +13,9 @@ const chats = [{
     id: 2,
     avatar: '/uploads/avatar2.png',
     username: 'Test User 2',
+    lastMessage: {
+      text: 'This is a third test message.',
+    },
   }],
 }];
 
@@ -38,6 +41,12 @@ export default class Chats extends Component {
     return text;
   }
 
+  lastMessage(chat, args, context) {
+    return chat.getMessages({ limit: 1, order: [['id', 'DESC']] }).then((message) => {
+      return message[0];
+    });
+  }
+
   render() {
     return (
       <div className="chats">
@@ -47,6 +56,7 @@ export default class Chats extends Component {
               <img src={(chat.users.length > 2 ? '/public/group.png' : chat.users[1].avatar)} />
               <div>
                 <h2>{this.shorten(this.usernamesToString(chat.users))}</h2>
+                <span>{this.shorten(chat.lastMessage.text)}</span>
               </div>
             </div>
           </div>
