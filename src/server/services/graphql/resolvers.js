@@ -45,7 +45,7 @@ export default function resolver() {
         return chat.getUsers();
       },
       lastMessage(chat, args, context) {
-        return chat.getMessages({limit: 1, order: [['id', 'DESC']]}).then((message) => {
+        return chat.getMessages({ limit: 1, order: [['id', 'DESC']] }).then((message) => {
           return message[0];
         });
       },
