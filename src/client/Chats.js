@@ -18,6 +18,26 @@ const GET_CHATS = gql`{
   }
 }`;
 
+const GET_CHAT = gql`
+  query chat($chatId: Int!) {
+    chat(chatId: $chatId) {
+      id
+      users {
+        id
+        avatar
+        username
+      }
+      messages {
+        id
+        text
+        user {
+          id
+        }
+      }
+    }
+  }
+`;
+
 export default class Chats extends Component {
   state = {
     openChats: []
@@ -32,6 +52,14 @@ export default class Chats extends Component {
       }
       openChats.push(id);
     }
+
+    this.setState({ openChats });
+  }
+  closeChat = (id) => {
+    var openChats = this.state.openChats.slice();
+
+    const index = openChats.indexOf(id);
+    openChats.splice(index, 1),
 
     this.setState({ openChats });
   }
@@ -58,6 +86,9 @@ export default class Chats extends Component {
   }
 
   render() {
+    const self = this;
+    const { openChats } = this.state;
+
     return (
       <div className="wrapper">
         <div className="chats">
@@ -82,6 +113,35 @@ export default class Chats extends Component {
             }}
           </Query>
         </div> 
+        <div className="openChats">
+          {openChats.map((chatId, i) =>
+            <Query key={"chatWindow" + chatId} query={GET_CHAT} variables={{ chatId }}>
+              {({ loading, error, data }) => {
+                if (loading) return <p>Loading...</p>;
+                if (error) return error.message;
+
+                const { chat } = data;
+
+                return (
+                  <div className="chatWindow">
+                    <div className="header">
+                      <span>{chat.users[1].username}</span>
+                      <button className="close">X</button>
+                    </div>
+                    <div className="messages">
+                      {chat.messages.map((message, j) =>
+                        <div key={'message' + message.id} className=
+                        {'message ' + (message.user.id > 1 ? 'left' : 'right')}>
+                          {message.text}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )
+              }}
+            </Query>
+          )}
+        </div>
       </div>
     );
   }
