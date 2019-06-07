@@ -2,7 +2,7 @@
 /* eslint-disable class-methods-use-this */
 import React, { Component } from 'react';
 import gql from 'graphql-tag';
-import { Query } from 'react-apollo';
+import { Query, Mutation } from 'react-apollo';
 
 const GET_CHATS = gql`{
   chats {
@@ -38,30 +38,55 @@ const GET_CHAT = gql`
   }
 `;
 
+const ADD_MESSAGE = gql`
+  mutation addMessage($message : MessageInput!) {
+    addMessage(message : $message) {
+      id 
+      text
+      user {
+        id
+      }
+    }
+  }
+`;
+
 export default class Chats extends Component {
   state = {
-    openChats: []
+    openChats: [],
+    // TODO remove when in production
+    textInputs: {}
   }
 
   openChat = (id) => {
     var openChats = this.state.openChats.slice();
+    var textInputs = Object.assign({}, this.state.textInputs);
 
     if(openChats.indexOf(id) === -1) {
       if (openChats.length > 2) {
         openChats = openChats.slice(1);
       }
       openChats.push(id);
+      textInputs[id] = '';
     }
-
-    this.setState({ openChats });
+    this.setState({ openChats, textInputs });
   }
+
+  // Function handles change event of user input
+  onChangeChatInput = (event, id) => {
+    event.preventDefault();
+    var textInputs = Object.assign({}, this.state.textInputs);
+    textInputs[id] = event.target.value;
+    this.setState({ textInputs });
+  }
+
   closeChat = (id) => {
     var openChats = this.state.openChats.slice();
+    var textInputs = Object.assign({}, this.state.textInputs);
 
     const index = openChats.indexOf(id);
     openChats.splice(index, 1),
-
-    this.setState({ openChats });
+    delete textInputs[id];
+    this.setState({ openChats, textInputs });
   }
 
   usernamesToString(users) {
@@ -85,9 +110,25 @@ export default class Chats extends Component {
     return text;
   }
 
+  // Every time user hits enter, message will be sent to the 
+  // GraphQL API. Input is pushed to local cache, and the input 
+  // is cleared. 
+  handleKeyPress = (event, id, addMessage) => {
+    const self = this;
+    var textInputs = Object.assign({}, this.state.textInputs);
+
+    if (event.key === 'Enter' && textInputs[id].length) {
+      addMessage({ variables: { message: { text: textInputs[id], chatId: id }
+        } }).then(() => {
+          textInputs[id] = '';
+          self.setState({ textInputs });
+        });
+    }
+  }
+
   render() {
     const self = this;
-    const { openChats } = this.state;
+    const { openChats, textInputs } = this.state;
 
     return (
       <div className="wrapper">
@@ -136,6 +177,20 @@ export default class Chats extends Component {
                         </div>
                       )}
                     </div>
+                    <Mutation
+                      update = {(store, { data: { addMessage } }) => {
+                        const data = store.readQuery({ query: GET_CHAT, variables: { chatId: chat.id },
+                          data });
+                      }}
+                      mutation={ADD_MESSAGE}>
+                        {addMessage => (
+                        <div className="input">
+                          <input type="text" value={textInputs[chat.id]} onChange={(event
+                          ) => self.onChangeChatInput(event, chat.id)} onKeyPress={(event
+                            ) => {self.handleKeyPress(event, chat.id, addMessage)}}/>
+                        </div> 
+                        )}
+                      </Mutation>
                   </div>
                 )
               }}
