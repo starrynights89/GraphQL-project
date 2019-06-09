@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet';
 import Feed from './Feed';
 import Chats from './Chats';
 import '../../assets/css/style.css';
+import './components/fontawesome';
 
 export default class App extends Component {
   render() {
