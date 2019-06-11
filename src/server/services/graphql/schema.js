@@ -49,6 +49,10 @@ const typeDefinitions = `
     chatId: Int!
   }
 
+  type Response {
+    success: Boolean
+  }
+
   type RootMutation {
     addPost (
       post: PostInput!
@@ -63,6 +67,9 @@ const typeDefinitions = `
       post: PostInput!
       postId: Int!
     ): Post
+    deletePost (
+      postId: Int!
+    ): Response
   }
 
   type RootQuery {
