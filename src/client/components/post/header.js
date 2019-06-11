@@ -1,3 +1,6 @@
+/* eslint-disable implicit-arrow-linebreak */
+/* eslint-disable react/button-has-type */
+/* eslint-disable react/jsx-wrap-multilines */
 /* eslint-disable react/prop-types */
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -6,10 +9,11 @@ import DeletePostMutation from '../mutations/deletePost';
 
 const DeleteButton = ({ deletePost, postId }) =>
   <button onClick={() => {
-    deletePost({ variables: { postId } })
-  }}>
+    deletePost({ variables: { postId } });
+  }}
+  >
     Delete
-  </button>
+  </button>;
 
 export default ({ post, changeState }) =>
   <div className="header">

@@ -1,3 +1,10 @@
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/prop-types */
+/* eslint-disable no-var */
+/* eslint-disable vars-on-top */
+/* eslint-disable prefer-arrow-callback */
+/* eslint-disable func-names */
+/* eslint-disable implicit-arrow-linebreak */
 import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -54,9 +61,8 @@ export default class DeletePostMutation extends Component {
         mutation={DELETE_POST}
       >
         {deletePost =>
-          React.Children.map(children, function(child) {
-              return React.cloneElement(child, { deletePost, postId
-            });
+          React.Children.map(children, function (child) {
+            return React.cloneElement(child, { deletePost, postId });
           })
         }
       </Mutation>

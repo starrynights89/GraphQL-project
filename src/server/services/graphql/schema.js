@@ -31,6 +31,14 @@ const typeDefinitions = `
     posts: [Post]
   }
 
+  type Response {
+    success: Boolean
+  }
+
+  type UsersSearch {
+    users: [User]
+  }
+
   input PostInput {
     text: String!
   }
@@ -47,10 +55,6 @@ const typeDefinitions = `
   input MessageInput {
     text: String!
     chatId: Int!
-  }
-
-  type Response {
-    success: Boolean
   }
 
   type RootMutation {
@@ -77,6 +81,7 @@ const typeDefinitions = `
     chats: [Chat]
     chat(chatId: Int): Chat
     postsFeed(page: Int, limit: Int): PostFeed
+    usersSearch(page: Int, limit: Int, text: String!): UsersSearch
   }
 
   schema {
