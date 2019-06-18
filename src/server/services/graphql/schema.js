@@ -29,10 +29,6 @@ const typeDefinitions = `
     posts: [Post]
   }
 
-  type Auth {
-    token: String
-  }
-
   input PostInput {
     text: String!
   }
@@ -76,10 +72,6 @@ const typeDefinitions = `
     deletePost (
       postId: Int!
     ): Response
-    login (
-      email: String!
-      password: String!
-    ): Auth
   }
 
   type RootQuery {
