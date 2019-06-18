@@ -17,6 +17,7 @@ p {
 }
 .post {
   background-color: #fff;
+  margin: 5px;
 }
 .post .header {
   height: 60px;
@@ -25,6 +26,7 @@ p {
   display: inline-block;
   vertical-align: middle;
 }
+
 .post .header img, .chats .chat .header img {
   width: 50px;
   height: 50px;
@@ -51,45 +53,46 @@ form textarea {
 form [type=submit] {
   border: none;
   background-color: #6ca6fd;
-  color: #ffff;
+  color: #fff;
   padding: 10px;
   border-radius: 5px;
   font-size: 14px;
   float: right;
 }
+
 .optimistic {
-  -webkit-animation: scale-up 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000)
-    both;
+  -webkit-animation: scale-up 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
   animation: scale-up 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
 }
 
 @-webkit-keyframes scale-up {
   0% {
-    -webkit-transform: scale(0.5);
-    transform: scale(0.5);
+      -webkit-transform: scale(0.5);
+      transform: scale(0.5);
   }
   100% {
-    -webkit-transform: scale(1);
-    transform: scale(1);
+      -webkit-transform: scale(1);
+      transform: scale(1);
   }
 }
 
 @keyframes scale-up {
   0% {
-    -webkit-transform: scale(0.5);
-    transform: scale(0.5);
+      -webkit-transform: scale(0.5);
+      transform: scale(0.5);
   }
   100% {
-    -webkit-transform: scale(1);
-    transform: scale(1);
+      -webkit-transform: scale(1);
+      transform: scale(1);
   }
 }
+
 .chats {
   background-color: #eee;
   width: 200px;
-  height: 100%;
+  height: calc(100% - 50px);
   position: fixed;
-  top: 0;
+  top: 50px;
   right: 0;
   border-left: 1px solid #c3c3c3;
 }
@@ -136,7 +139,7 @@ form [type=submit] {
   float: right;
   border: none;
   background: none;
-  color: #ffff;
+  color: #fff;
   cursor: pointer;
 }
 
@@ -169,6 +172,21 @@ form [type=submit] {
   color: #000;
 }
 
+.openChats {
+  position: fixed;
+  right: 200px;
+  width: calc(100% - 200px);
+  bottom: 0;
+}
+
+.wrapper {
+  height: 100%;
+  position: fixed;
+  right: 0;
+  top: 0;
+}
+
+
 .chatWindow .input input {
   width: calc(100% - 4px);
   border: none;
@@ -179,45 +197,32 @@ form [type=submit] {
   outline: none;
 }
 
-.openChats {
-  position: fixed;
-  right: 200px;
-  width: calc(100% - 200px);
-  bottom: 0;
-}
-
-.wrapper {
-  height: 100%;
-  right: 0;
-  top: 0;
-}
-
 .bouncer {
   margin: 20px auto;
-  border-radius: 100%;
+  border-radius: 100%; 
   -webkit-animation: bounce 1.0s infinite ease-in-out;
   animation: bounce 1.0s infinite ease-in-out;
 }
 
 @-webkit-keyframes bounce {
   0% {
-    -webkit-transform: scale(0)
+      -webkit-transform: scale(0)
   }
   100% {
-    -webkit-transform: scale(1.0);
-    opacity: 0;
+      -webkit-transform: scale(1.0);
+      opacity: 0;
   }
 }
 
 @keyframes bounce {
-  0% {
-    -webkit-transform: scale(0);
-    transform: scale(0);
+  0% { 
+      -webkit-transform: scale(0);
+      transform: scale(0);
   }
   100% {
-    -webkit-transform: scale(1.0);
-    transform: scale(1.0);
-    opacity: 0;
+      -webkit-transform: scale(1.0);
+      transform: scale(1.0);
+      opacity: 0;
   }
 }
 
@@ -256,9 +261,9 @@ form [type=submit] {
 }
 
 .post .header .dropdown:after {
-  height: 100%;
-  content: '';
-  font-size: 0;
+  height:100%;
+  content:'';
+  font-size:0;
   vertical-align:middle;
   display:inline-block;
   box-sizing: border-box;
@@ -279,7 +284,7 @@ form [type=submit] {
   padding: 3px;
 }
 
-.dropdown button:last-child {
+.dropdown button:last-child{
   border-bottom: none;
 }
 
