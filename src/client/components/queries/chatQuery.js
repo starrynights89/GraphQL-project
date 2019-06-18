@@ -7,9 +7,9 @@ import Error from '../error';
 const GET_CHAT = gql`
   query chat($chatId: Int!) {
     chat(chatId: $chatId) {
-      id  
+      id
       users {
-        id 
+        id
         avatar
         username
       }

@@ -5,10 +5,10 @@ import Loading from '../loading';
 import Error from '../error';
 
 const GET_POSTS = gql`
-  query postsFeed($page: Int, $limit: Int) {
-    postsFeed(page: $page, limit: $limit) {
+  query postsFeed($page: Int, $limit: Int) { 
+    postsFeed(page: $page, limit: $limit) { 
       posts {
-        id 
+        id
         text
         user {
           avatar

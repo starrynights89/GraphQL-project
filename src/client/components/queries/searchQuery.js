@@ -5,8 +5,8 @@ import Loading from '../loading';
 import Error from '../error';
 
 const GET_USERS = gql`
-  query usersSearch($page: Int, $limit: Int, $text: String!) {
-    usersSearch(page: $page, limit: $limit, text: $text) {
+  query usersSearch($page: Int, $limit: Int, $text: String!) { 
+    usersSearch(page: $page, limit: $limit, text: $text) { 
       users {
         id
         avatar

@@ -1,4 +1,3 @@
-/* eslint-disable no-var */
 import React from 'react';
 
 export default ({color, size}) => {
@@ -8,13 +7,13 @@ export default ({color, size}) => {
     height: 40,
   };
 
-  if (typeof color !== typeof undefined) {
+  if(typeof color !== typeof undefined) {
     style.color = color;
   }
-  if (typeof size !== typeof undefined) {
+  if(typeof size !== typeof undefined) {
     style.width = size;
     style.height = size;
   }
 
-  return <div className="bouncer" style={style} />;
-};
+  return <div className="bouncer" style={style}></div>;
+}

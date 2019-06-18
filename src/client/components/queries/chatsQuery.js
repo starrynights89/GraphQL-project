@@ -5,11 +5,11 @@ import Loading from '../loading';
 import Error from '../error';
 
 const GET_CHATS = gql`
-  query chats {
+  query chats { 
     chats {
       id
       users {
-        id 
+        id
         avatar
         username
       }
@@ -19,6 +19,7 @@ const GET_CHATS = gql`
     }
   }
 `;
+
 
 export default class UserQuery extends Component {
   render() {
@@ -30,9 +31,9 @@ export default class UserQuery extends Component {
           if (error) return <Error><p>{error.message}</p></Error>;
 
           const { chats } = data;
-          return React.Children.map(children, function (child) {
+          return React.Children.map(children, function(child) {
             return React.cloneElement(child, { chats });
-          })
+          });
         }}
       </Query>
     );

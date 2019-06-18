@@ -1,4 +1,3 @@
-/* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
 import { Helmet } from 'react-helmet';
 import Feed from './Feed';
