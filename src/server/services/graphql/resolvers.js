@@ -1,7 +1,7 @@
 import Sequelize from 'sequelize';
 import logger from '../../helpers/logger';
 
-const { Op } = Sequelize;
+const Op = Sequelize.Op;
 
 export default function resolver() {
   const { db } = this;
@@ -75,34 +75,33 @@ export default function resolver() {
       postsFeed(root, { page, limit }, context) {
         var skip = 0;
 
+        if (page && limit) {
+          skip = page * limit;
+        }
+
         var query = {
           order: [['createdAt', 'DESC']],
           offset: skip,
         };
-
-        if (page && limit) {
-          skip = page * limit;
-        }
 
         if (limit) {
           query.limit = limit;
         }
 
         return {
-          posts: Post.findAll(query),
+          posts: Post.findAll(query)
         };
       },
       usersSearch(root, { page, limit, text }, context) {
-        if (text.lenght < 3) {
+        if (text.length < 3) {
           return {
-            users: [],
+            users: []
           };
         }
         var skip = 0;
         if (page && limit) {
           skip = page * limit;
         }
-        // Send query through sequelize
         var query = {
           order: [['createdAt', 'DESC']],
           offset: skip,
@@ -113,10 +112,10 @@ export default function resolver() {
         query.where = {
           username: {
             [Op.like]: '%' + text + '%'
-          },
+          }
         };
         return {
-          users: User.findall(query),
+          users: User.findAll(query)
         };
       },
     },
@@ -127,11 +126,9 @@ export default function resolver() {
           message: 'Post was created',
         });
 
-        // Retrieve all users from the database
         return User.findAll().then((users) => {
           const usersRow = users[0];
 
-          // Set user post into database
           return Post.create({
             ...post,
           }).then((newPost) => {
@@ -156,7 +153,7 @@ export default function resolver() {
           });
         });
       },
-      addMessage(root, { message },context) {
+      addMessage(root, { message }, context) {
         logger.log({
           level: 'info',
           message: 'Message was created',
@@ -183,8 +180,8 @@ export default function resolver() {
         },
         {
           where: {
-            id: postId,
-          },
+            id: postId
+          }
         }).then((rows) => {
           if (rows[0] === 1) {
             logger.log({
@@ -199,10 +196,10 @@ export default function resolver() {
       deletePost(root, { postId }, context) {
         return Post.destroy({
           where: {
-            id: postId,
-          },
-        }).then(function (rows) {
-          if (rows === 1) {
+            id: postId
+          }
+        }).then(function(rows){
+          if (rows === 1){
             logger.log({
               level: 'info',
               message: 'Post ' + postId + 'was deleted',
@@ -214,14 +211,14 @@ export default function resolver() {
           return {
             success: false
           };
-        }, function (err) {
+        }, function(err){
           logger.log({
             level: 'error',
             message: err.message,
           });
         });
       },
-    },
+    }
   };
 
   return resolvers;

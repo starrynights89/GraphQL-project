@@ -1,5 +1,3 @@
-// GraphQL schema
-
 const typeDefinitions = `
   type User {
     id: Int
@@ -19,7 +17,7 @@ const typeDefinitions = `
     chat: Chat
     user: User
   }
-  
+
   type Chat {
     id: Int
     messages: [Message]
@@ -31,18 +29,10 @@ const typeDefinitions = `
     posts: [Post]
   }
 
-  type Response {
-    success: Boolean
-  }
-
-  type UsersSearch {
-    users: [User]
-  }
-
   input PostInput {
     text: String!
   }
-
+  
   input UserInput {
     username: String!
     avatar: String!
@@ -57,6 +47,14 @@ const typeDefinitions = `
     chatId: Int!
   }
 
+  type Response {
+    success: Boolean
+  }
+
+  type UsersSearch {
+    users: [User]
+  }
+  
   type RootMutation {
     addPost (
       post: PostInput!
