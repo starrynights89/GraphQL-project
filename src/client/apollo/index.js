@@ -4,6 +4,20 @@ import { HttpLink } from 'apollo-link-http';
 import { onError } from 'apollo-link-error';
 import { ApolloLink } from 'apollo-link';
 
+const AuthLink = (operation, next) => {
+  const token = localStorage.getItem('jwt');
+  if (token) {
+    operation.setContext(context => ({
+      ...context,
+      headers: {
+        ...context.headers,
+        Authorization: `Bearer ${token}`,
+      },
+    }));
+  }
+  return next(operation);
+};
+
 const client = new ApolloClient({
   link: ApolloLink.from([
     onError(({ graphQLErrors, networkError }) => {
@@ -14,8 +28,10 @@ const client = new ApolloClient({
         }
       }
     }),
+    AuthLink,
     new HttpLink({
       uri: 'http://localhost:8000/graphql',
+      credentials: 'same-origin',
     }),
   ]),
   cache: new InMemoryCache(),
