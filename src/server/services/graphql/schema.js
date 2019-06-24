@@ -31,10 +31,6 @@ const typeDefinitions = `
     posts: [Post]
   }
 
-  type Auth {
-    token: String
-  }
-
   input PostInput {
     text: String!
   }
@@ -59,6 +55,10 @@ const typeDefinitions = `
 
   type UsersSearch {
     users: [User]
+  }
+
+  type Auth {
+    token: String
   }
   
   type RootMutation {
@@ -86,7 +86,7 @@ const typeDefinitions = `
       username: String!
       email: String!
       password: String!
-    ) : Auth
+    ): Auth
   }
 
   type RootQuery {

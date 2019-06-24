@@ -40,11 +40,13 @@ export default function resolver() {
       },
     },
     RootQuery: {
+      currentUser(root, args, context) {
+        return context.user;
+      },
       posts(root, args, context) {
         return Post.findAll({ order: [['createdAt', 'DESC']] });
       },
       chat(root, { chatId }, context) {
-        // findById is replaced with findByPk in Sequelize v5
         return Chat.findByPk(chatId, {
           include: [{
             model: User,
@@ -56,23 +58,15 @@ export default function resolver() {
         });
       },
       chats(root, args, context) {
-        return User.findAll().then((users) => {
-          if (!users.length) {
-            return [];
-          }
-
-          const usersRow = users[0];
-
-          return Chat.findAll({
-            include: [{
-              model: User,
-              required: true,
-              through: { where: { userId: usersRow.id } },
-            },
-            {
-              model: Message,
-            }],
-          });
+        return Chat.findAll({
+          include: [{
+            model: User,
+            required: true,
+            through: { where: { userId: context.user.id } },
+          },
+          {
+            model: Message,
+          }],
         });
       },
       postsFeed(root, { page, limit }, context) {
@@ -161,19 +155,15 @@ export default function resolver() {
           level: 'info',
           message: 'Message was created',
         });
-
-        return User.findAll().then((users) => {
-          const usersRow = users[0];
-
-          return Message.create({
-            ...message,
-          }).then((newMessage) => {
-            return Promise.all([
-              newMessage.setUser(usersRow.id),
-              newMessage.setChat(message.chatId),
-            ]).then(() => {
-              return newMessage;
-            });
+        return Message.create({
+          ...message,
+        }).then((newMessage) => {
+          return Promise.all([
+            newMessage.setUser(context.user.id),
+            newMessage.setChat(message.chatId),
+          ]).then(() => {
+            pubsub.publish('messageAdded', { messageAdded: newMessage });
+            return newMessage;
           });
         });
       },
@@ -230,17 +220,16 @@ export default function resolver() {
         }).then(async (users) => {
           if (users.length = 1) {
             const user = users[0];
-            const passwordValid = await bcrypt.compare(password, 
-            user.password);
+            const passwordValid = await bcrypt.compare(password, user.password);
             if (!passwordValid) {
               throw new Error('Password does not match');
             }
             const token = JWT.sign({ email, id: user.id }, JWT_SECRET, {
-              expiresIn: '1d'
+              expiresIn: '1d',
             });
-      
+
             return {
-              token
+              token,
             };
           } else {
             throw new Error("User not found");
@@ -250,7 +239,7 @@ export default function resolver() {
       signup(root, { email, password, username }, context) {
         return User.findAll({
           where: {
-            [Op.or]: [{email}, {username}]
+            [Op.or]: [{ email }, { username }],
           },
           raw: true,
         }).then(async (users) => {
