@@ -224,9 +224,9 @@ export default function resolver() {
       login(root, { email, password }, context) {
         return User.findAll({
           where: {
-            email
+            email,
           },
-          raw: true
+          raw: true,
         }).then(async (users) => {
           if(users.length = 1) {
             const user = users[0];
