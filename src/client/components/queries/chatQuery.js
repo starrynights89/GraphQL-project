@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Query } from 'react-apollo';
-import gql from 'graphql-tag';
+import { Query } from "react-apollo";
 import Loading from '../loading';
 import Error from '../error';
+import gql from "graphql-tag";
 
 const GET_CHAT = gql`
   query chat($chatId: Int!) {
@@ -17,7 +17,7 @@ const GET_CHAT = gql`
         id
         text
         user {
-          id
+            id
         }
       }
     }
@@ -25,32 +25,31 @@ const GET_CHAT = gql`
 `;
 
 export default class UserQuery extends Component {
-  getVariables() {
-    const { variables } = this.props;
-    var query_variables = {};
+    getVariables() {
+        const { variables } = this.props;
+        var query_variables = {};
 
-    if (typeof variables.chatId !== typeof undefined) {
-      query_variables.chatId = variables.chatId;
+        if(typeof variables.chatId !== typeof undefined) {
+            query_variables.chatId = variables.chatId;
+        }
+
+        return query_variables;
     }
+    render() {
+        const { children } = this.props;
+        const variables = this.getVariables();
+        return(
+            <Query query={GET_CHAT} variables={variables}>
+                {({ loading, error, data }) => {
+                    if (loading) return <Loading/>;
+                    if (error) return <Error><p>{error.message}</p></Error>;
 
-    return query_variables;
-  }
-
-  render() {
-    const { children } = this.props;
-    const variables = this.getVariables();
-    return (
-      <Query query={GET_CHAT} variables={variables}>
-        {({ loading, error, data }) => {
-          if (loading) return <Loading />;
-          if (error) return <Error><p>{error.message}</p></Error>;
-
-          const { chat } = data;
-          return React.Children.map(children, function(child) {
-            return React.cloneElement(child, { chat });
-          })
-        }}
-      </Query>
-    );
-  }
+                    const { chat } = data;
+                    return React.Children.map(children, function(child){
+                        return React.cloneElement(child, { chat });
+                    })
+                }}
+            </Query>
+        )
+    }
 }

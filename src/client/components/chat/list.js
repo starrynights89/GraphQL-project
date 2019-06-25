@@ -38,8 +38,8 @@ class ChatsList extends Component {
                     </div>
                 )}
             </div>
-        );
+        )
     }
 }
 
-export default ChatsList;
+export default ChatsList
