@@ -8,6 +8,7 @@ import Bar from './components/bar';
 import LoginRegisterForm from './components/loginregister';
 import CurrentUserQuery from './components/queries/currentUser';
 import { withApollo } from "react-apollo";
+import '@synapsestudios/react-drop-n-crop/lib/react-drop-n-crop.min.css';
 
 class App extends Component {
   constructor(props) {

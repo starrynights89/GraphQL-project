@@ -1,12 +1,12 @@
 import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
-import { HttpLink } from 'apollo-link-http';
 import { onError } from 'apollo-link-error';
 import { ApolloLink } from 'apollo-link';
+import { createUploadLink } from 'apollo-upload-client';
 
 const AuthLink = (operation, next) => {
   const token = localStorage.getItem('jwt');
-  if(token) {
+  if (token) {
     operation.setContext(context => ({
       ...context,
       headers: {
@@ -23,9 +23,9 @@ const client = new ApolloClient({
     onError(({ graphQLErrors, networkError }) => {
       if (graphQLErrors) {
         graphQLErrors.map(({ message, locations, path, extensions }) => {
-          if(extensions.code === 'UNAUTHENTICATED') {
+          if (extensions.code === 'UNAUTHENTICATED') {
             localStorage.removeItem('jwt');
-            client.resetStore()
+            client.resetStore();
           }
           console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`);
         });
@@ -35,7 +35,7 @@ const client = new ApolloClient({
       }
     }),
     AuthLink,
-    new HttpLink({
+    createUploadLink({
       uri: 'http://localhost:8000/graphql',
       credentials: 'same-origin',
     }),
