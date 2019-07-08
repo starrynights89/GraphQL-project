@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
 import { Helmet } from 'react-helmet';
-import Feed from './Feed';
-import Chats from './Chats';
 import '../../assets/css/style.css';
 import './components/fontawesome';
-import Bar from './components/bar';
-import LoginRegisterForm from './components/loginregister';
-import CurrentUserQuery from './components/queries/currentUser';
 import { withApollo } from "react-apollo";
 import '@synapsestudios/react-drop-n-crop/lib/react-drop-n-crop.min.css';
+import Router from './router';
 
 class App extends Component {
   constructor(props) {
@@ -36,17 +32,11 @@ class App extends Component {
     return (
       <div className="container">
         <Helmet>
-          <title>Graphbook - Feed</title>
-          <meta name="description" content="Newsfeed of all your friends on Graphbook" />
+          <title>Graphsite - Feed</title>
+          <meta name="description" content="Newsfeed of all your friends on Graphsite" />
         </Helmet>
-        {this.state.loggedIn ?
-          <CurrentUserQuery>
-            <Bar />
-            <Feed />
-            <Chats />
-          </CurrentUserQuery>
-          : <LoginRegisterForm changeLoginState={this.changeLoginState}/>
-        }
+        <Router loggedIn={this.state.loggedIn} changeLoginState=
+          {this.changeLoginState=this.changeLoginState}/>
       </div>
     );
   }
