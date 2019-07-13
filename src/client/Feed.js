@@ -6,8 +6,8 @@ import PostForm from './components/post/form';
 
 export default class Feed extends Component {
   render() {
-    const query_variables = { page: 0, limit: 10};
-    
+    const query_variables = { page: 0, limit: 10 };
+
     return (
       <div className="container">
         <AddPostMutation variables={query_variables}>

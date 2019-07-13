@@ -42,7 +42,6 @@ export default class PostsFeedQuery extends Component {
 
     return query_variables;
   }
-
   render() {
     const { children } = this.props;
     const variables = this.getVariables();

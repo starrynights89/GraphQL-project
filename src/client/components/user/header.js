@@ -18,7 +18,7 @@ export default class UserProfileHeader extends Component {
           <p>You can provide further information here and build
           your really personal header component for your users.</p>
         </div>
-      </div> 
+      </div>
     );
   }
 }

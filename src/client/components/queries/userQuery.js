@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import Loading from '../error';
+import Loading from '../loading';
+import Error from '../error';
 
 const GET_USER = gql`
-  query user($username: String!) {
-    user(username: $username) {
+  query user($username: String!) { 
+    user(username: $username) { 
       id
       email
       username
@@ -23,7 +24,6 @@ export default class UserQuery extends Component {
     }
     return query_variables;
   }
-
   render() {
     const { children } = this.props;
     const variables = this.getVariables();

@@ -25,16 +25,16 @@ function dataURItoBlob(dataURI) {
   for (var i = 0; i < byteString.length; i++) {
     ia[i] = byteString.charCodeAt(i);
   }
-
+  
   const file = new Blob([ia], { type: mimeString });
   return file;
 }
 
 export default class AvatarUpload extends Component {
-  state = {
+  state = { 
     result: null,
     filename: null,
-    filetype: null,
+    filetype: null,      
     src: null,
     error: null,
   }
@@ -60,7 +60,7 @@ export default class AvatarUpload extends Component {
         contentLabel="Change avatar"
         style={modalStyle}
       >
-        <DropNCrop onChange={this.onChange} value={this.state} />
+      <DropNCrop onChange={this.onChange} value={this.state} />
         {this.state.src !== null && (
           <button className="cancelUpload" onClick=
           {this.changeImage}>Change image</button>

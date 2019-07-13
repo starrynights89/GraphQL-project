@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Helmet } from 'react-helmet';
 import '../../assets/css/style.css';
+import '@synapsestudios/react-drop-n-crop/lib/react-drop-n-crop.min.css';
 import './components/fontawesome';
 import { withApollo } from "react-apollo";
-import '@synapsestudios/react-drop-n-crop/lib/react-drop-n-crop.min.css';
 import Router from './router';
 
 class App extends Component {
@@ -35,8 +35,7 @@ class App extends Component {
           <title>Graphsite - Feed</title>
           <meta name="description" content="Newsfeed of all your friends on Graphsite" />
         </Helmet>
-        <Router loggedIn={this.state.loggedIn} changeLoginState=
-          {this.changeLoginState=this.changeLoginState}/>
+        <Router loggedIn={this.state.loggedIn} changeLoginState={this.changeLoginState} />
       </div>
     );
   }

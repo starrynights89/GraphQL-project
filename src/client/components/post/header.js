@@ -1,8 +1,8 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Link } from 'react-router-dom';
 import Dropdown from '../helpers/dropdown';
 import DeletePostMutation from '../mutations/deletePost';
-import { Link } from 'react-router-dom';
 
 const DeleteButton = ({deletePost, postId}) =>
   <button onClick={() => {
@@ -17,7 +17,7 @@ export default ({post, changeState}) =>
       <img src={post.user.avatar} />
       <div>
         <h2>{post.user.username}</h2>
-      </div> 
+      </div>
     </Link>
     <Dropdown trigger={<FontAwesomeIcon icon="angle-down" />}>
       <button onClick={changeState}>Edit</button>

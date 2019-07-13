@@ -16,8 +16,8 @@ export default class UserProfile extends Component {
           </UserQuery>
         </div>
         <div className="container">
-          <PostsQuery varialbes={query_variables}>
-            <FeedList />
+          <PostsQuery variables={query_variables}>
+            <FeedList/>
           </PostsQuery>
         </div>
       </div>

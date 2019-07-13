@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import UploadAvatarMutation from '../mutations/uploadAvatar';
-import AvatarUpload from '../avatarModal'
+import AvatarUpload from '../avatarModal';
 
 export default class UserBar extends Component {
   state = {

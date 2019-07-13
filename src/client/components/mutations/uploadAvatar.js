@@ -3,8 +3,8 @@ import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 
 const GET_CURRENT_USER = gql`
-  query currentUser {
-    currentUser {
+  query currentUser { 
+    currentUser { 
       id
       username
       avatar
