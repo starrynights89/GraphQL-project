@@ -5,6 +5,10 @@ import cors from 'cors';
 import compress from 'compression';
 import servicesLoader from './services';
 import db from './database';
+import ApolloClient from './ssr/apollo';
+import React from 'react';
+import Graphsite from './ssr';
+import ReactDOM from 'react-dom/server';
 
 const utils = {
   db,
@@ -52,7 +56,13 @@ for (let i = 0; i < serviceNames.length; i += 1) {
   }
 }
 
-app.get('/', (req, res) => {
-  res.sendFile(path.join(root, '/dist/client/index.html'));
+app.get('*', (req, res) => {
+  res.status(200);
+  res.send(`<!doctype html>`);
+  res.end();
+  const client = ApolloClient(req);
+  const context = {};
+  const App = (<Graphsite client={client} location={req.url} context={context} />);
+  const content = ReactDOM.renderToString(App);
 });
 app.listen(8000, () => console.log('Listening on port 8000!'));
