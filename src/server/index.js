@@ -3,12 +3,14 @@ import path from 'path';
 import helmet from 'helmet';
 import cors from 'cors';
 import compress from 'compression';
+import ReactDOM from 'react-router-dom';
 import servicesLoader from './services';
 import db from './database';
 import ApolloClient from './ssr/apollo';
 import React from 'react';
 import Graphsite from './ssr';
-import ReactDOM from 'react-dom/server';
+import template from './ssr/template';
+import { Helmet } from 'react-helmet';
 
 const utils = {
   db,
@@ -57,12 +59,17 @@ for (let i = 0; i < serviceNames.length; i += 1) {
 }
 
 app.get('*', (req, res) => {
-  res.status(200);
-  res.send(`<!doctype html>`);
-  res.end();
   const client = ApolloClient(req);
   const context = {};
   const App = (<Graphsite client={client} location={req.url} context={context} />);
   const content = ReactDOM.renderToString(App);
+  if (context.url) {
+    res.redirect(301, context.url);
+  } else {
+    const head = Helmet.renderStatic();
+    res.status(200);
+    res.send(`<!doctype html>\n${template(content, head)}`);
+    res.end();
+  }
 });
 app.listen(8000, () => console.log('Listening on port 8000!'));

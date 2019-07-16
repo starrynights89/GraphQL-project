@@ -29,6 +29,7 @@
     "aws-sdk": "^2.493.0",
     "bcrypt": "^3.0.6",
     "compression": "^1.7.4",
+    "cookies": "^0.7.3",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "graphql": "^14.4.2",
