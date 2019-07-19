@@ -19,12 +19,6 @@ class App extends Component {
   state = {
     loggedIn: false
   }
-  componentWillMount() {
-    const token = localStorage.getItem('jwt');
-    if(token) {
-      this.setState({loggedIn: true});
-    }
-  }
   changeLoginState = (loggedIn) => {
     this.setState({ loggedIn });
   }

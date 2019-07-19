@@ -6,7 +6,7 @@ import Router from '../../client/router';
 
 class App extends Component{
   state = {
-    loggedIn: false
+    loggedIn: this.props.loggedIn
   }
   changeLoginState = (loggedIn) => {
     this.setState({ loggedIn });

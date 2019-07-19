@@ -11,6 +11,9 @@ import React from 'react';
 import Graphsite from './ssr';
 import template from './ssr/template';
 import { Helmet } from 'react-helmet';
+import Cookies from 'cookies';
+import JWT from 'jsonwebtoken';
+const { JWT_SECRET } = process.env;
 
 const utils = {
   db,
@@ -47,6 +50,13 @@ if (process.env.NODE_ENV === 'development') {
 
 app.use('/', express.static(path.join(root, 'dist/client')));
 app.use('/uploads', express.static(path.join(root, 'uploads')));
+app.use(
+  (req, res, next) => {
+    const options = { keys: ['Some random keys'] };
+    req.cookies = new Cookies(req, res, options);
+    next();
+  },
+);
 
 const serviceNames = Object.keys(services);
 for (let i = 0; i < serviceNames.length; i += 1) {
@@ -59,9 +69,17 @@ for (let i = 0; i < serviceNames.length; i += 1) {
 }
 
 app.get('*', (req, res) => {
+  const token = req.cookies.get('authorization', { signed: true });
+  var loggedIn;
+  try {
+    await JWT.verify(token, JWT_SECRET);
+    loggedIn = true;
+  } catch(e) {
+    loggedIn = false;
+  }
   const client = ApolloClient(req);
   const context = {};
-  const App = (<Graphsite client={client} location={req.url} context={context} />);
+  const App = (<Graphsite client={client} loggedIn={loggedIn} location={req.url} context={context} />);
   const content = ReactDOM.renderToString(App);
   if (context.url) {
     res.redirect(301, context.url);

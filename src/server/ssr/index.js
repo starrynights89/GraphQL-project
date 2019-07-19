@@ -7,7 +7,7 @@ export default class ServerClient extends React.Component {
     const { client, location, context } = this.props;
     return (
       <ApolloProvider client={client}>
-        <App location={location} context={context} />
+        <App location={location} context={context} loggedIn={loggedIn} />
       </ApolloProvider>
     );
   }
