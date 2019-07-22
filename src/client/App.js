@@ -17,7 +17,7 @@ class App extends Component {
     this.unsubscribe();
   }
   state = {
-    loggedIn: false
+    loggedIn: (typeof window.__APOLLO_STATE__ !== typeof undefined && typeof window.__APOLLO_STATE__.ROOT_QUERY !== typeof undefined && typeof window.__APOLLO_STATE__.ROOT_QUERY.currentUser !== typeof undefined)
   }
   changeLoginState = (loggedIn) => {
     this.setState({ loggedIn });

@@ -3,12 +3,12 @@ import path from 'path';
 import helmet from 'helmet';
 import cors from 'cors';
 import compress from 'compression';
-import ReactDOM from 'react-router-dom';
 import servicesLoader from './services';
 import db from './database';
 import ApolloClient from './ssr/apollo';
 import React from 'react';
 import Graphsite from './ssr';
+import { renderToStringWithData } from 'react-apollo';
 import template from './ssr/template';
 import { Helmet } from 'react-helmet';
 import Cookies from 'cookies';
@@ -68,26 +68,28 @@ for (let i = 0; i < serviceNames.length; i += 1) {
   }
 }
 
-app.get('*', (req, res) => {
+app.get('*', async (req, res) => {
   const token = req.cookies.get('authorization', { signed: true });
   var loggedIn;
   try {
     await JWT.verify(token, JWT_SECRET);
     loggedIn = true;
-  } catch(e) {
+  } catch (e) {
     loggedIn = false;
   }
-  const client = ApolloClient(req);
+  const client = ApolloClient(req, loggedIn);
   const context = {};
   const App = (<Graphsite client={client} loggedIn={loggedIn} location={req.url} context={context} />);
-  const content = ReactDOM.renderToString(App);
-  if (context.url) {
-    res.redirect(301, context.url);
-  } else {
-    const head = Helmet.renderStatic();
-    res.status(200);
-    res.send(`<!doctype html>\n${template(content, head)}`);
-    res.end();
-  }
+  renderToStringWithData(App).then((content) => {
+    if (context.url) {
+      res.redirect(301, context.url);
+    } else {
+      const initialState = client.extract();
+      const head = Helmet.renderStatic();
+      res.status(200);
+      res.send(`<!doctype html>\n${template(content, head, initialState)}`);
+      res.end();
+    }
+  });
 });
 app.listen(8000, () => console.log('Listening on port 8000!'));
