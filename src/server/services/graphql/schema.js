@@ -96,7 +96,7 @@ const typeDefinitions = `
     ): Auth
     uploadAvatar (
       file: Upload!
-    ): File @auth 
+    ): File @auth
     logout: Response @auth
   }
 
@@ -110,9 +110,14 @@ const typeDefinitions = `
     currentUser: User @auth
   }
 
+  type RootSubscription {
+    messageAdded: Message
+  }
+
   schema {
     query: RootQuery
     mutation: RootMutation
+    subscription: RootSubscription
   }
 `;
 
