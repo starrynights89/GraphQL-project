@@ -3,7 +3,9 @@ import bcrypt from 'bcrypt';
 import JWT from 'jsonwebtoken';
 import aws from 'aws-sdk';
 import logger from '../../helpers/logger';
+import { PubSub, withFilter } from 'graphql-subscriptions';
 
+const pubsub = new PubSub();
 const s3 = new aws.S3({
   signatureVersion: 'v4',
   region: 'us-west-1',
@@ -339,6 +341,11 @@ export default function resolver() {
         return {
           message: true,
         };
+      },
+    },
+    RootSubscription: {
+      messageAdded: {
+        subscribe: () => pubsub.asyncIterator(['messageAdded']),
       },
     },
   };
