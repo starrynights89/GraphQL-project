@@ -38,7 +38,6 @@ if (process.env.NODE_ENV === 'production') {
   app.use(compress());
   app.use(cors());
 }
-
 app.use(helmet.referrerPolicy({ policy: 'same-origin' }));
 
 if (process.env.NODE_ENV === 'development') {
