@@ -22,20 +22,20 @@ const GET_CHATS = gql`
 
 
 export default class UserQuery extends Component {
-    render() {
-        const { children } = this.props;
-        return(
-            <Query query={GET_CHATS}>
-                {({ loading, error, data }) => {
-                    if (loading) return <Loading/>;
-                    if (error) return <Error><p>{error.message}</p></Error>;
+  render() {
+    const { children } = this.props;
+    return (
+      <Query query={GET_CHATS}>
+        {({ loading, error, data, subscribeToMore }) => {
+          if (loading) return <Loading />;
+          if (error) return <Error><p>{error.message}</p></Error>;
 
-                    const { chats } = data;
-                    return React.Children.map(children, function(child){
-                        return React.cloneElement(child, { chats });
-                    })
-                }}
-            </Query>
-        )
-    }
+          const { chats } = data;
+          return React.Children.map(children, function(child) {
+            return React.cloneElement(child, { chats, subscribeToMore });
+          });
+        }}
+      </Query>
+    );
+  }
 }

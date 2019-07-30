@@ -29,11 +29,11 @@ const subClient = new SubscriptionClient(SUBSCRIPTIONS_ENDPOINT, {
 });
 const wsLink = new WebSocketLink(subClient);
 
+
 const link = split(
   ({ query }) => {
     const { kind, operation } = getMainDefinition(query);
-    return kind === 'OperationDefinition' && operation ===
-     'subscription';
+    return kind === 'OperationDefinition' && operation === 'subscription';
   },
   wsLink,
   httpLink,
