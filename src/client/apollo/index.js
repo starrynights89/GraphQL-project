@@ -29,7 +29,7 @@ const subClient = new SubscriptionClient(SUBSCRIPTIONS_ENDPOINT, {
 });
 const wsLink = new WebSocketLink(subClient);
 wsLink.subscriptionClient.maxConnectTimeGenerator.duration = () =>
-wsLink.subscriptionClient.maxConnectTimeGenerator.max;
+  wsLink.subscriptionClient.maxConnectTimeGenerator.max;
 
 const link = split(
   ({ query }) => {

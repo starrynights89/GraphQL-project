@@ -17,7 +17,7 @@ class App extends Component{
         <Helmet>
           <title>Graphsite - Feed</title>
           <meta name="description" content="Newsfeed of all your
-            friends on Graphbook" />
+            friends on Graphsite" />
         </Helmet>
         <Router loggedIn={this.state.loggedIn} changeLoginState=
           {this.changeLoginState} location={this.props.location}
