@@ -1,9 +1,24 @@
+import 'regenerator-runtime';
+
 const assert = require('assert');
 const request = require('request');
 const { expect } = require('chai');
 const should = require('chai').should();
+require('babel-plugin-require-context-hook/register')();
 
 describe('Graphbook application test', () => {
+  var app; 
+
+  before((done) => {
+    app = require('../src/server').default;
+    app.on('listening', () => {
+      done();
+    });
+  });
+
+  after((done) => {
+    app.close(done);
+  });
 
   it('renders and serves the index page', (done) => {
     request('http://localhost:8000', (err, res, body) => {
