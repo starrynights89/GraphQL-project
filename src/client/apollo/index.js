@@ -6,14 +6,15 @@ import { WebSocketLink } from 'apollo-link-ws';
 import { SubscriptionClient } from 'subscriptions-transport-ws';
 import { getMainDefinition } from 'apollo-utilities';
 import { ApolloLink, split } from 'apollo-link';
+import { createPersistedQueryLink } from 'apollo-link-persisted-queries';
 
 const protocol = (location.protocol !== 'https:') ? 'ws://' : 'wss://';
 const port = location.port ? ':'+location.port: '';
 
-const httpLink = createUploadLink({
+const httpLink = createPersistedQueryLink().concat(createUploadLink({
   uri: 'http://localhost:8000/graphql',
   credentials: 'same-origin',
-});
+}));
 
 const SUBSCRIPTIONS_ENDPOINT = protocol + location.hostname + port  + '/subscriptions';
 const subClient = new SubscriptionClient(SUBSCRIPTIONS_ENDPOINT, {
@@ -40,6 +41,18 @@ const link = split(
   httpLink,
 );
 
+const InfoLink = (operation, next) => {
+  operation.setContext(context => ({
+    ...context,
+    headers: {
+      ...context.headers,
+      'apollo-client-name': 'Apollo Frontend Client',
+      'apollo-client-version': '1',
+    },
+  }));
+
+  return next(operation);
+};
 const AuthLink = (operation, next) => {
   const token = localStorage.getItem('jwt');
   if (token) {
@@ -70,6 +83,7 @@ const client = new ApolloClient({
         }
       }
     }),
+    InfoLink,
     AuthLink,
     link,
   ]),

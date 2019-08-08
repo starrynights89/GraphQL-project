@@ -4,7 +4,7 @@ import JWT from 'jsonwebtoken';
 import Resolvers from './resolvers';
 import Schema from './schema';
 import auth from './auth';
-const { JWT_SECRET } = process.env;
+const { JWT_SECRET, ENGINE_KEY } = process.env;
 
 export default (utils) => {
   const executableSchema = makeExecutableSchema({
@@ -17,6 +17,33 @@ export default (utils) => {
 
   const server = new ApolloServer({
     schema: executableSchema,
+    engine: {
+      apiKey: 'service:starrynights89-37:pY8ehNaj1mGdxfzbEi10pg',
+      generateClientInfo: ({
+        request,
+      }) => {
+        const { headers } = request.http;
+        const clientName = headers.get('apollo-client-name');
+        const clientVersion = headers.get('apollo-client-version');
+
+        if (clientName && clientVersion) {
+          return {
+            clientName,
+            clientVersion,
+          };
+        } else {
+          return {
+            clientName: "Unknown Client",
+            clientVersion: "Unversioned",
+          };
+        }
+      },
+    },
+    cacheControl: {
+      defaultMaxAge: 5,
+      stripFormattedExtensions: false,
+      calculateCacheControlHeaders: true,
+    },
     context: async ({ req }) => {
       const authorization = req.headers.authorization;
       if (typeof authorization !== typeof undefined) {
