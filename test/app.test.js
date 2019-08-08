@@ -1,10 +1,32 @@
+/* eslint-disable react/prefer-stateless-function */
+import 'core-js';
 import 'regenerator-runtime';
+import React from 'react';
+import { configure, mount } from 'enzyme';
+import Adapater from 'enzyme-adapter-react-16';
+import register from 'ignore-styles';
+import { ApolloClient } from 'apollo-client';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import { ApolloLink } from 'apollo-link';
+import { createUploadLink } from 'apollo-upload-client';
+import App from '../src/server/ssr';
+
+register(['.css', '.sass', 'scss']);
+configure({ adapater: new Adapater() });
 
 const assert = require('assert');
 const request = require('request');
 const { expect } = require('chai');
 const should = require('chai').should();
+const { JSDOM } = require('jsdom');
+
+const dom = new JSDOM('<!doctype html><html><body></body></html>', { url: 'http://graphsite.test' });
+const { window } = dom;
+global.window = window;
+global.document = window.document;
+
 require('babel-plugin-require-context-hook/register')();
+require('isomorphic-fetch');
 
 describe('Graphbook application test', () => {
   var app;
@@ -109,6 +131,36 @@ describe('Graphbook application test', () => {
         body.data.should.have.property('chats').with.lengthOf(0);
         done(err);
       });
+    });
+  });
+
+  describe('frontend', () => {
+    it('renders and switched to the login or register form', (done) => {
+      const httpLink = createUploadLink({
+        uri: 'http://localhost:8000/graphql',
+        credentials: 'same-origin',
+      });
+      const client = new ApolloClient({
+        link: ApolloLink.from([
+          httpLink,
+        ]),
+        cache: new InMemoryCache(),
+      });
+
+      class Graphsite extends React.Component {
+        render() {
+          return (
+            <App client={client} context={{}} loggedIn={false} location="/" />
+          );
+        }
+      }
+
+      const wrapper = mount(<Graphsite />);
+
+      expect(wrapper.html()).to.contain('<a>Want to signup? Click here</a>');
+      wrapper.find('LoginRegisterForm').find('a').simulate('click');
+      expect(wrapper.html()).to.contain('<a>Want to login? Click here</a>');
+      done();
     });
   });
 });
