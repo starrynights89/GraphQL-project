@@ -2,13 +2,13 @@ const typeDefinitions = `
   directive @auth on QUERY | FIELD_DEFINITION | FIELD
   scalar Upload
 
-  type User {
+  type User @cacheControl(maxAge: 120) {
     id: Int
-    avatar: String
+    avatar: String @cacheControl(maxAge: 240)
     username: String
     email: String
   }
-
+  
   type Post {
     id: Int
     text: String
@@ -119,6 +119,16 @@ const typeDefinitions = `
     mutation: RootMutation
     subscription: RootSubscription
   }
+
+  enum CacheControlScope {
+    PUBLIC
+    PRIVATE
+  }
+  
+  directive @cacheControl (
+    maxAge: Int
+    scope: CacheControlScope
+  ) on FIELD_DEFINITION | OBJECT | INTERFACE
 `;
 
 export default [typeDefinitions];

@@ -4,6 +4,7 @@ import JWT from 'jsonwebtoken';
 import Resolvers from './resolvers';
 import Schema from './schema';
 import auth from './auth';
+
 const { JWT_SECRET, ENGINE_KEY } = process.env;
 
 export default (utils) => {
