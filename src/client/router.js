@@ -1,7 +1,18 @@
 import React, { Component } from 'react';
-import LoginRegisterForm from './components/loginregister';
-import Main from './Main';
-import User from './User';
+import loadable from 'react-loadable';
+import loading from './components/loading';
+const User = loadable({
+  loader: () => import('./User'),
+  loading: loading,
+});
+const Main = loadable({
+  loader: () => import('./Main'),
+  loading: loading,
+});
+const LoginRegisterForm = loadable({
+  loader: () => import('./components/loginregister'),
+  loading: loading,
+});
 
 const ReactRouter = require('react-router-dom');
 
