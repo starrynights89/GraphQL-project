@@ -8,8 +8,11 @@
     "client:build": "webpack --config webpack.client.build.config.js",
     "stats": "webpack --profile --json --config webpack.client.build.config.js > stats.json",
     "analyze": "webpack-bundle-analyzer stats.json",
-    "server": "nodemon --exec babel-node --plugins require-context-hook --watch src/server src/server/index.js",
-    "test": "mocha --exit test/app.test.js --require babel-hook --require @babel/register"
+    "server": "nodemon --exec babel-node --plugins require-context-hook,dynamic-import-node --watch src/server src/server/index.js",
+    "test": "npm run build && mocha --exit test/app.test.js --require babel-hook --require @babel/register",
+    "build": "npm run client:build && npm run server:build",
+    "server:build": "webpack --config webpack.server.build.config.js",
+    "server:production": "node dist/server/bundle.js"
   },
   "author": "",
   "license": "ISC",

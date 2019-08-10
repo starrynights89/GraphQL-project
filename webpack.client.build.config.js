@@ -1,11 +1,12 @@
 /* eslint-disable import/no-extraneous-dependencies */
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { ReactLoadablePlugin } = require('react-loadable/webpack');
 
 const buildDirectory = 'dist';
 const outputDirectory = buildDirectory + '/client';
+
 module.exports = {
   mode: 'production',
   entry: './src/client/index.js',
@@ -40,8 +41,8 @@ module.exports = {
       cleanOnceBeforeBuildPatterns: [path.join(__dirname,
         buildDirectory)],
     }),
-    new HtmlWebpackPlugin({
-      template: './public/index.html',
+    new ReactLoadablePlugin({
+      filename: './dist/react-loadable.json',
     }),
     new MiniCssExtractPlugin({
       filename: 'bundle.css',
