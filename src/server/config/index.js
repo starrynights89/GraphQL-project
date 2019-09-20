@@ -1,7 +1,7 @@
 module.exports = {
   "development": {
     "username": "alexander",
-    "password": "Toyota1989",
+    "password": "Honda1989",
     "database": "graphsite_dev",
     "host": "localhost",
     "dialect": "mysql",
